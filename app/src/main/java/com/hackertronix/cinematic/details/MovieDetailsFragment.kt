@@ -16,6 +16,7 @@ import com.hackertronix.cinematic.R
 import com.hackertronix.cinematic.databinding.FragmentDetailsBinding
 import com.hackertronix.cinematic.model.Movie
 import com.hackertronix.cinematic.util.Constants.IMAGE_BASE
+import com.hackertronix.cinematic.util.convertToFiveStarScale
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_details) {
@@ -58,28 +59,26 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_details) {
 
         binding.title.text = movie.title
         binding.summary.text = movie.overview
-        binding.ratingValue.text = (movie.voteAverage / 2).toString()
-        binding.movieRating.rating = movie.voteAverage / 2
+        binding.ratingValue.text = movie.voteAverage.convertToFiveStarScale().toString()
+        binding.movieRating.rating = movie.voteAverage.convertToFiveStarScale()
 
-        binding.addToFavourites.icon =
-            if (movie.isFavourite) {
+        binding.addToFavourites.apply {
+            icon = if (movie.isFavourite) {
                 getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
             } else {
                 getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
             }
-
-        binding.addToFavourites.text =
-            if (movie.isFavourite) {
+            text = if (movie.isFavourite) {
                 getString(R.string.remove_from_favourites)
             } else {
                 getString(R.string.add_to_favourites)
             }
-
-        binding.addToFavourites.setOnClickListener {
-            if(movie.isFavourite) {
-                viewModel.unsetMovieAsFavourite(movie.id)
-            } else {
-                viewModel.setMovieAsFavourite(movie.id)
+            setOnClickListener {
+                if (movie.isFavourite) {
+                    viewModel.unsetMovieAsFavourite(movie.id)
+                } else {
+                    viewModel.setMovieAsFavourite(movie.id)
+                }
             }
         }
     }
