@@ -8,8 +8,7 @@ import coil.load
 import com.hackertronix.cinematic.util.Constants.IMAGE_BASE
 import com.hackertronix.cinematic.databinding.ItemMovieBinding
 import com.hackertronix.cinematic.model.Movie
-import com.hackertronix.cinematic.util.MovieListClickListener
-import com.hackertronix.cinematic.util.MoviesDiffCallback
+import com.hackertronix.cinematic.util.*
 
 class MoviesAdapter : ListAdapter<Movie, MoviesAdapter.MoviesViewHolder>(MoviesDiffCallback()) {
 
@@ -33,9 +32,9 @@ class MoviesAdapter : ListAdapter<Movie, MoviesAdapter.MoviesViewHolder>(MoviesD
 
         fun bind(movie: Movie) {
             binding.movieName.text = movie.title
-            binding.movieRating.rating = movie.voteAverage / 2
-            binding.ratingValue.text = (movie.voteAverage / 2).toString()
-            binding.movieInfo.text = "${movie.releaseDate}   ${movie.originalLanguage}   ${movie.voteCount} ratings"
+            binding.movieRating.rating = movie.voteAverage.convertToFiveStarScale()
+            binding.ratingValue.text = movie.voteAverage.convertToFiveStarScale().toString()
+            binding.movieInfo.text = "${movie.releaseDate.toYear()}   ${movie.originalLanguage.toLanguageName()}   ${movie.voteCount} ratings"
             binding.background.load(IMAGE_BASE + movie.backdropPath) {
                 crossfade(true)
             }
