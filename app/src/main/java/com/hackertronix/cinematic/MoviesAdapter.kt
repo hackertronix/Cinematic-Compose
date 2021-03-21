@@ -32,9 +32,9 @@ class MoviesAdapter : ListAdapter<Movie, MoviesAdapter.MoviesViewHolder>(MoviesD
 
         fun bind(movie: Movie) {
             binding.movieName.text = movie.title
-            binding.movieRating.rating = movie.voteAverage.convertToFiveStarScale()
-            binding.ratingValue.text = movie.voteAverage.convertToFiveStarScale().toString()
-            binding.movieInfo.text = "${movie.releaseDate.toYear()}   ${movie.originalLanguage.toLanguageName()}   ${movie.voteCount} ratings"
+            binding.movieRating.rating = movie.rating
+            binding.ratingValue.text = movie.rating.toString()
+            binding.movieInfo.text = movie.movieInfo
             binding.background.load(IMAGE_BASE + movie.backdropPath) {
                 crossfade(true)
             }
