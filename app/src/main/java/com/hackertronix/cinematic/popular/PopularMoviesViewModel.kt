@@ -19,7 +19,11 @@ class PopularMoviesViewModel constructor(private val repository: MoviesRepositor
     private val _movies = MutableLiveData<List<Movie>>()
     val movies = _movies as LiveData<List<Movie>>
 
-    fun getPopularMovies() {
+    init {
+        getPopularMovies()
+    }
+
+    private fun getPopularMovies() {
         _events.value = Events.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
