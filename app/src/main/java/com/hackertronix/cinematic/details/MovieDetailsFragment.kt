@@ -59,8 +59,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_details) {
 
         binding.title.text = movie.title
         binding.summary.text = movie.overview
-        binding.ratingValue.text = movie.voteAverage.convertToFiveStarScale().toString()
-        binding.movieRating.rating = movie.voteAverage.convertToFiveStarScale()
+        binding.ratingValue.text = movie.rating.toString()
+        binding.movieRating.rating = movie.rating
 
         binding.addToFavourites.apply {
             icon = if (movie.isFavourite) {

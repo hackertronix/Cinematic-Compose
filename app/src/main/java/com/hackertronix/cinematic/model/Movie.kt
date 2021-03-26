@@ -4,6 +4,9 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.hackertronix.cinematic.util.convertToFiveStarScale
+import com.hackertronix.cinematic.util.toLanguageName
+import com.hackertronix.cinematic.util.toYear
 import kotlinx.android.parcel.Parcelize
 
 @Entity
@@ -51,4 +54,11 @@ data class Movie(
 	val voteCount: Int = 0,
 
 	val isFavourite: Boolean = false,
-) : Parcelable
+) : Parcelable {
+
+	val rating: Float
+	get() = voteAverage.convertToFiveStarScale()
+
+	val movieInfo: String
+	get() = "${this.releaseDate.toYear()}	${this.originalLanguage.toLanguageName()}	${this.voteCount} ratings"
+}
