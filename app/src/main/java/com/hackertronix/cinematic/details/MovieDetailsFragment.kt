@@ -8,15 +8,14 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import coil.size.Scale
 import coil.transform.BlurTransformation
-import coil.transform.CircleCropTransformation
 import com.hackertronix.cinematic.R
 import com.hackertronix.cinematic.databinding.FragmentDetailsBinding
 import com.hackertronix.cinematic.model.Movie
 import com.hackertronix.cinematic.util.Constants.IMAGE_BASE
-import com.hackertronix.cinematic.util.convertToFiveStarScale
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_details) {
@@ -26,6 +25,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_details) {
 
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel: MovieDetailsViewModel by viewModel()
+
+    private val castAdapter: CastAdapter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +39,26 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getMovieDetails(args.movieId)
+        binding.castList.apply {
+            adapter = castAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        args.movieId.also {
+            viewModel.getMovieDetails(it)
+            viewModel.getCast(it)
+        }
         attachObservers()
     }
 
     private fun attachObservers() {
         viewModel.movie.observe(viewLifecycleOwner, Observer { movie ->
             renderUi(movie)
+        })
+
+        viewModel.cast.observe(viewLifecycleOwner, Observer { cast ->
+            castAdapter.submitList(cast)
         })
     }
 

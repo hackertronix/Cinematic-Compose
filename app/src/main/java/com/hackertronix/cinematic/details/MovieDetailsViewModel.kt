@@ -19,8 +19,8 @@ class MovieDetailsViewModel constructor(private val repository: MoviesRepository
     private val _movie = MutableLiveData<Movie>()
     val movie = _movie as LiveData<Movie>
 
-    private val _casts = MutableLiveData<List<Cast>>()
-    val casts = _casts as LiveData<List<Cast>>
+    private val _cast = MutableLiveData<List<Cast>>()
+    val cast = _cast as LiveData<List<Cast>>
 
     fun getMovieDetails(id: Int) {
         _events.value = Events.Loading
@@ -30,10 +30,16 @@ class MovieDetailsViewModel constructor(private val repository: MoviesRepository
                     _movie.value = movie
                 }
             }
+        }
+    }
 
+    fun getCast(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.getCastDetails(id).also { cast ->
                 withContext(Dispatchers.Main) {
-                    _casts.value = cast
+                    _cast.value = cast.filter {
+                        !it.profilePath.isNullOrEmpty()
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.hackertronix.cinematic.di
 
 import com.hackertronix.cinematic.MoviesAdapter
+import com.hackertronix.cinematic.details.CastAdapter
 import com.hackertronix.cinematic.details.MovieDetailsViewModel
 import com.hackertronix.cinematic.favorites.FavouriteMoviesViewModel
 import com.hackertronix.cinematic.popular.PopularMoviesViewModel
@@ -16,4 +17,6 @@ val appModule = module {
     viewModel { MovieDetailsViewModel(get()) }
 
     factory { MoviesAdapter() }
+
+    factory { CastAdapter() }
 }
