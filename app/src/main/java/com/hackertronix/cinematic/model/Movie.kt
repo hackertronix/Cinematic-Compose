@@ -60,5 +60,5 @@ data class Movie(
 	get() = voteAverage.convertToFiveStarScale()
 
 	val movieInfo: String
-	get() = "${this.releaseDate.toYear()}	${this.originalLanguage.toLanguageName()}	${this.voteCount} ratings"
+	get() = "${this.releaseDate.toYear()}\t\t${this.originalLanguage.toLanguageName()}\t\t${this.voteCount} ratings"
 }
